@@ -208,10 +208,6 @@ defmodule PlugRailsCSRFProtection do
   end
 
   defp ensure_csrf_token(conn, session_key, csrf_token) do
-    conn = case get_session(conn, "session_id") do
-      nil -> put_session(conn, "session_id", Base.encode16(:crypto.strong_rand_bytes(16), case: :lower))
-      _session_id -> conn
-    end
     Process.delete(:plug_masked_csrf_token)
     case Process.delete(:plug_unmasked_csrf_token) do
       ^csrf_token -> conn
